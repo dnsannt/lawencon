@@ -35,4 +35,10 @@
     INNER JOIN so_detail ON product.id=so_detail.product_id
     GROUP BY so_detail.product_id;
  
-
+ 7. SELECT customer.customer_code, customer.customer_name, SUM(so_detail.price) AS Total_Amount
+    FROM so_detail
+    LEFT JOIN so ON so.id = so_detail.so_id
+    INNER JOIN customer ON so.customer_id=customer.id
+    GROUP by so_detail.so_id;
+    
+    
