@@ -29,4 +29,9 @@
  5. SELECT so.so_no, customer.customer_name, so.trans_date
     FROM so 
     INNER JOIN customer ON so.customer_id=customer.id;
+    
+ 6. SELECT product.product_code, product.product_name, SUM(so_detail.price)
+    FROM product
+    INNER JOIN so_detail ON product.id=so_detail.product_id
+    GROUP BY so_detail.product_id;
 
