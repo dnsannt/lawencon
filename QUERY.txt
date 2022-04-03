@@ -30,7 +30,7 @@
     FROM so 
     INNER JOIN customer ON so.customer_id=customer.id;
  
- 6. SELECT product.product_code, product.product_name, SUM(so_detail.price)
+ 6. SELECT product.product_code, product.product_name, SUM(so_detail.price)AS TOTAL_PRICE, SUM(so_detail.qty)AS TOTAL_QTY
     FROM product
     INNER JOIN so_detail ON product.id=so_detail.product_id
     GROUP BY so_detail.product_id;
