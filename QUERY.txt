@@ -1,44 +1,44 @@
---QUERY (40 Points)--
-
  1. SELECT category.id, category.category_name, product.product_name AS parent_name 
     FROM product
     INNER JOIN category 
     ON product.category_id=category.id;
  
- 2.   ==BERDASARKAN UMUR 30-40 tahun==
-      SELECT customer_code, 
+ 2.   SELECT customer_code, 
 	          customer_name, 
              address, 
-             TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) AS Age, 
-      CASE 
-          WHEN TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) <= 40 THEN '30-40 tahun' 
-          WHEN TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) IS NULL THEN '(NULL)' END as KETERANGAN 
-      FROM customer GROUP BY Age;
+             TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) AS Age
+      FROM customer 
+      WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) <= 40;
 
- 3. SELECT so.so_no, customer.customer_code, customer.customer_name AS customer_id, so.trans_date, so.payment,
-		 customer.address, customer.birth_date
-    FROM so 
-    INNER JOIN customer 
-    ON so.customer_id=customer.id;
+ 3. ==jawaban benar==
+    SELECT customer.customer_code,customer.customer_name,sum(so_detail.qty*so_detail.price-(so_detail.qty*so_detail.price*so_detail.discount/100)) AS total_transaksi
+    FROM so_detail
+    INNER JOIN so ON so_detail.so_id=so.id
+    INNER JOIN customer ON so.customer_id=customer.id
+    GROUP BY customer.customer_code,customer.customer_name;
 
- 4. SELECT product.id, product.product_code, product.product_name, product.price, category.category_name AS kategori 
+4.  SELECT product.id, product.product_code, product.product_name, product.price, category.category_name AS kategori 
     FROM product
-    INNER JOIN category 
+    LEFT JOIN category 
     ON product.category_id=category.id;
 
- 5. SELECT so.so_no, customer.customer_name, so.trans_date
-    FROM so 
-    INNER JOIN customer ON so.customer_id=customer.id;
- 
- 6. SELECT product.product_code, product.product_name, SUM(so_detail.price)AS TOTAL_PRICE, SUM(so_detail.qty)AS TOTAL_QTY
+5.  SELECT so.so_no, customer.customer_name, so.trans_date, 
+    sum(so_detail.qty*so_detail.price-(so_detail.qty*so_detail.price*so_detail.discount/100)) AS total_amount
+    FROM so
+    LEFT JOIN customer ON so.customer_id=customer.id
+    INNER JOIN so_detail ON so.id=so_detail.so_id
+    GROUP BY so.trans_date ORDER BY so.trans_date;
+
+6.  SELECT product.product_code, product.product_name, SUM(so_detail.qty)AS TOTAL_QTY
     FROM product
     INNER JOIN so_detail ON product.id=so_detail.product_id
     GROUP BY so_detail.product_id;
- 
- 7. SELECT customer.customer_code, customer.customer_name, SUM(so_detail.price) AS Total_Amount
+
+7.  SELECT customer.customer_code, customer.customer_name, 
+    SUM(so_detail.qty*so_detail.price-(so_detail.qty*so_detail.price*so_detail.discount/100)) AS total_amount
     FROM so_detail
     LEFT JOIN so ON so.id = so_detail.so_id
     INNER JOIN customer ON so.customer_id=customer.id
-    GROUP by so_detail.so_id;
-    
-    
+    GROUP by customer.customer_name;
+
+8.  
